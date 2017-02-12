@@ -2,7 +2,7 @@
 
 Start by adding your working directory and Google API key to the macro_variables.R file.
 
-Save raw Capital Bikeshare data from https://s3.amazonaws.com/capitalbikeshare-data/index.html on your hard drive.
+Run function in download_qtrly_data.R to automatically download and unzip files from https://s3.amazonaws.com/capitalbikeshare-data/index.html on your hard drive.
 
 Run data_preprocessing to read and scrub the Capital Bikeshare data.
 
