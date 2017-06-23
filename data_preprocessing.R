@@ -11,7 +11,7 @@ library(XML)
 # Read in trip data
 # -----------------
 
-file_list <- list.files(wd)
+file_list <- list.files(file.path(wd, "raw_data"))
 
 colnames <- c('Duration', 'Start.date', 'End.date', 'Start.station.number', 'Start.Station',   
               'End.station.number', 'End.Station', 'Bike', 'Subscription.Type')
@@ -19,7 +19,7 @@ colnames <- c('Duration', 'Start.date', 'End.date', 'Start.station.number', 'Sta
 trip_data <- data.frame()
 for (file in file_list) {
     print(file)
-    tmp <- read.csv(paste0(wd, '/raw_data/', file), stringsAsFactors = FALSE)
+    tmp <- read.csv(file.path(wd, "raw_data", file), stringsAsFactors = FALSE)
     if (ncol(tmp) == 7) {
         tmp <- tmp %>%
             mutate(Start.station.number = '',
@@ -43,10 +43,12 @@ for (file in file_list) {
     }
     
     tmp$Start.time <- strftime(tmp$Start.date.time, format = "%H:%M")
-    tmp$Start.date <- as.Date(tmp$Start.date.time, format = '%m/%d/%Y')
+    tmp$Start.date <- as.Date(as.character(tmp$Start.date.time))
+    
     
     tmp$End.time <- strftime(tmp$End.date.time, format = "%H:%M")
-    tmp$End.date <- as.Date(tmp$End.date.time, format = '%m/%d/%Y')
+    tmp$End.date <- as.Date(as.character(tmp$Start.date.time))
+    
     
     trip_data <- rbind(trip_data, tmp)
 }
@@ -74,7 +76,7 @@ trip_data$Start.station.number <- as.numeric(trip_data$Start.station.number)
 trip_data$End.station.number <- as.numeric(trip_data$End.station.number)
 
 # Save dataframe
-save(trip_data, file = paste0(wd, '/trip_data.RData'))
+save(trip_data, file = file.path(wd, "trip_data.RData"))
 
 # Read in station data
 # --------------------
